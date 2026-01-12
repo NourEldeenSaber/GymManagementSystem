@@ -14,6 +14,7 @@ namespace GymManagementDAL.Entities
 
 
     }
+
     [Owned]
     class Address
     {
