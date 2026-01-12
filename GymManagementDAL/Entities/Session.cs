@@ -24,6 +24,14 @@ namespace GymManagementDAL.Entities
 
         #endregion
 
+        #region Session - Trainer
+
+        public int TrainerId { get; set; }
+
+        public Trainer SessionTrainer { get; set; } = null!;
+
+        #endregion
+
         #endregion
     }
 }

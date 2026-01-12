@@ -18,6 +18,11 @@ namespace GymManagementDAL.Data.Configurations
             builder.HasOne(x=>x.SessionCategory)
                 .WithMany(x => x.Sessions)
                 .HasForeignKey(x => x.CategoryId);
+
+            // [Trainer - Session]
+            builder.HasOne(x => x.SessionTrainer)
+                .WithMany(x => x.TrainerSession)
+                .HasForeignKey(fk => fk.TrainerId);
         }
     }
 }
