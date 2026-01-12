@@ -32,6 +32,11 @@ namespace GymManagementDAL.Entities
 
         #endregion
 
+        #region Session - MemberSession
+
+        public ICollection<MemberSession> SessionMembers { get; set; }
+
+        #endregion
         #endregion
     }
 }
