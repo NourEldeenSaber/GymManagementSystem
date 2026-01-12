@@ -5,6 +5,8 @@ namespace GymManagementDAL.Entities
     {
         // JoinDate  == CreatedAt of baseEntity
         public string Photo { get; set; }
+        
+        #region Relations
 
         #region Member - HealthRecord Relation
 
@@ -12,5 +14,12 @@ namespace GymManagementDAL.Entities
 
         #endregion
 
+        #region Member - MemberShip
+
+        public ICollection<MemberShip> MemberShips { get; set; } = null!;
+
+        #endregion 
+
+        #endregion
     }
 }
