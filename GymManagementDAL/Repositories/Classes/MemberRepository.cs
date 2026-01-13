@@ -25,7 +25,7 @@ namespace GymManagementDAL.Repositories.Classes
             return _dbContext.SaveChanges();
         }
 
-        public IEnumerable<Member> GetAll =>  _dbContext.Members.ToList();
+        public IEnumerable<Member> GetAll() =>  _dbContext.Members.ToList();
         
         public Member? GetById(int id) => _dbContext.Members.Find(id);
 
