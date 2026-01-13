@@ -4,7 +4,7 @@ using GymManagementDAL.Repositories.Interfaces;
 
 namespace GymManagementDAL.Repositories.Classes
 {
-    internal class TrainerRepository : ITrainerRepository
+    public class TrainerRepository : ITrainerRepository
     {
         private readonly GymDbContext _dbcontext;
         public TrainerRepository(GymDbContext dbContext)

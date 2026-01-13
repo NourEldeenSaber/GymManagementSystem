@@ -2,19 +2,19 @@
 
 namespace GymManagementDAL.Repositories.Interfaces
 {
-    public interface IMemberRepository
+    public interface IMemberShipRepository
     {
         // GetAll
-        IEnumerable<Member> GetAll();
+        IEnumerable<MemberShip> GetAll();
 
         // GetById
-        Member? GetById(int id);
+        MemberShip? GetById(int id);
 
         // Add
-        int Add(Member member);
+        int Add(MemberShip memberShip);
 
         // Update
-        int Update(Member member);
+        int Update(MemberShip memberShip);
 
         // Delete
         int Delete(int id);

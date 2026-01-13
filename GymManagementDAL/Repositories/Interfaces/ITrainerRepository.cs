@@ -2,7 +2,7 @@
 
 namespace GymManagementDAL.Repositories.Interfaces
 {
-    internal interface ITrainerRepository
+    public interface ITrainerRepository
     {
         IEnumerable<Trainer> GetAll();
         Trainer? GetById(int id);

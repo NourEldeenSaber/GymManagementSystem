@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GymManagementDAL.Repositories.Classes
 {
-    internal class MemberRepository : IMemberRepository
+    public class MemberRepository : IMemberRepository
     {
 
         private readonly GymDbContext _dbContext;
