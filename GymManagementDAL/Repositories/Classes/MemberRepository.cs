@@ -1,14 +1,20 @@
 ﻿using GymManagementDAL.Data.Contexts;
 using GymManagementDAL.Entities;
 using GymManagementDAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace GymManagementDAL.Repositories.Classes
 {
     internal class MemberRepository : IMemberRepository
     {
 
-        private readonly GymDbContext _dbContext = new GymDbContext();
+        private readonly GymDbContext _dbContext;
 
+        //CLR Will Inject Object From GymDbContext
+        public MemberRepository(GymDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public int Add(Member member)
         {
             _dbContext.Members.Add(member);

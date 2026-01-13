@@ -1,7 +1,7 @@
 ﻿
 namespace GymManagementDAL.Entities
 {
-    internal class MemberSession : BaseEntity
+    public class MemberSession : BaseEntity
     {
         #region Prop
 

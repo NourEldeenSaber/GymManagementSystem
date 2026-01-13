@@ -2,7 +2,7 @@
 
 namespace GymManagementDAL.Entities
 {
-    internal class Plan : BaseEntity
+    public class Plan : BaseEntity
     {
         #region Prop
         public string Name { get; set; } = null!;

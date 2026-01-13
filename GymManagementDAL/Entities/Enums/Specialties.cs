@@ -2,7 +2,7 @@
 
 namespace GymManagementDAL.Entities.Enums
 {
-    internal enum Specialties
+    public enum Specialties
     {
         GeneralFitness = 1,
         Yoga,

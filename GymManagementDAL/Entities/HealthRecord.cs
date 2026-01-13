@@ -3,7 +3,7 @@
 namespace GymManagementDAL.Entities
 {
     // 1-1 Relationship with member [Shared PK]
-    internal class HealthRecord : BaseEntity
+    public class HealthRecord : BaseEntity
     {
         public decimal Height { get; set; }
         public decimal Weight { get; set; }

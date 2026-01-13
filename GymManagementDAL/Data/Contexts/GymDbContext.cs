@@ -4,12 +4,14 @@ using System.Reflection;
 
 namespace GymManagementDAL.Data.Contexts
 {
-    internal class GymDbContext : DbContext
+    public class GymDbContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server = MSI\\SQLEXPRESS; DataBase = GymManagement; Trusted_Connection = True; TrustServerCertificate = True");
-        }
+        public GymDbContext(DbContextOptions<GymDbContext> options) : base(options) { }
+        
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server = MSI\\SQLEXPRESS; DataBase = GymManagement; Trusted_Connection = True; TrustServerCertificate = True");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

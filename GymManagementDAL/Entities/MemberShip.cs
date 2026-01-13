@@ -1,6 +1,6 @@
 ﻿namespace GymManagementDAL.Entities
 {
-    internal class MemberShip : BaseEntity
+    public class MemberShip : BaseEntity
     {
 
         #region prop

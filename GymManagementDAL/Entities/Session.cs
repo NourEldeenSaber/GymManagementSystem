@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GymManagementDAL.Entities
+﻿namespace GymManagementDAL.Entities
 {
-    internal class Session : BaseEntity
+    public class Session : BaseEntity
     {
         #region Properties
         public string Description { get; set; } = null!;
