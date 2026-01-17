@@ -23,9 +23,7 @@ namespace GymManagementPL
 
                 #endregion
             });
-
-            //builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
-            //builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+            builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 
 
             var app = builder.Build();
