@@ -12,17 +12,7 @@ namespace GymManagementDAL.Repositories.Classes
         {
             _dbContext = DbContext;
         }
-        public int Add(Plan plan)
-        {
-            _dbContext.Plans.Add(plan);
-            return _dbContext.SaveChanges();
-        }
-
-        public int Delete(Plan plan)
-        {
-            _dbContext.Plans.Remove(plan);
-            return _dbContext.SaveChanges();
-        }
+        
 
         public IEnumerable<Plan> GetAll() => _dbContext.Plans.ToList();
 

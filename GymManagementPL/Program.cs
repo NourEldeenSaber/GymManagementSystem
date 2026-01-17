@@ -14,10 +14,14 @@ namespace GymManagementPL
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<GymDbContext>(options=>
             {
+                #region options OnConfiguring
+
                 //options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings")["DefualtConnection"]);
                 //options.UseSqlServer(builder.Configuration["ConnectionStrings:DefualtConnection"]);
 
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection")); 
+
+                #endregion
             });
 
             //builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
