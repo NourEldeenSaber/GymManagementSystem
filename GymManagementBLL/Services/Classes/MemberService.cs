@@ -11,19 +11,22 @@ namespace GymManagementBLL.Services.Classes
         private readonly IPlanRepository _planRepository;
         private readonly IGenericRepository<MemberShip> _memberShipRepository;
         private readonly IGenericRepository<HealthRecord> _HealthRecordRepository;
+        private readonly IGenericRepository<MemberSession> _memberSessionRepository;
 
         //CLR Will inject address of object in constructor
         // Constructor: Inject required repositories via Dependency Injection
         public MemberService(IGenericRepository<Member> memberRepository ,
                              IGenericRepository<MemberShip> memberShipRepository,
                              IPlanRepository planRepository,
-                             IGenericRepository<HealthRecord> HealthReacordRepository
+                             IGenericRepository<HealthRecord> HealthReacordRepository,
+                             IGenericRepository<MemberSession> memberSessionRepository
         )
         {
             _memberRepository = memberRepository;
             _memberShipRepository = memberShipRepository;
             _planRepository = planRepository;
             _HealthRecordRepository = HealthReacordRepository;
+            _memberSessionRepository = memberSessionRepository;
         }
 
         // Get all members and map them to MemberViewModel.
@@ -210,6 +213,33 @@ namespace GymManagementBLL.Services.Classes
             }
         }
 
+
+        public bool RemoveMember(int MemberId)
+        {
+            var member = _memberRepository.GetById(MemberId);
+            if (member is null) return false;
+
+            var HasActiveMemberSession = _memberSessionRepository.GetAll(X=>X.MemberId == MemberId && X.Session.StartDate > DateTime.Now).Any();
+            if(HasActiveMemberSession) return false;
+
+            var memberShips = _memberShipRepository.GetAll(Q => Q.MemberId == MemberId);
+            try
+            {
+                if (memberShips.Any())
+                {
+                    foreach(var memberShip in memberShips)
+                    {
+                        _memberShipRepository.Delete(memberShip);
+                    }
+                }
+                return _memberRepository.Delete(member) > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         #region Helpers Methods
 
         // Check if email already exists in the system.
@@ -223,6 +253,8 @@ namespace GymManagementBLL.Services.Classes
         {
             return _memberRepository.GetAll(Q => Q.Phone == phone).Any();
         }
+
+        
 
         #endregion
     }
