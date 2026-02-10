@@ -13,6 +13,7 @@ namespace GymManagementBLL.Services.Classes
         private readonly IGenericRepository<HealthRecord> _HealthRecordRepository;
 
         //CLR Will inject address of object in constructor
+        // Constructor: Inject required repositories via Dependency Injection
         public MemberService(IGenericRepository<Member> memberRepository ,
                              IGenericRepository<MemberShip> memberShipRepository,
                              IPlanRepository planRepository,
@@ -25,6 +26,8 @@ namespace GymManagementBLL.Services.Classes
             _HealthRecordRepository = HealthReacordRepository;
         }
 
+        // Get all members and map them to MemberViewModel.
+        // Returns an empty collection if no members exist.
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
             var members = _memberRepository.GetAll();
@@ -66,6 +69,9 @@ namespace GymManagementBLL.Services.Classes
 
             return memberViewModels;
         }
+
+        // Creates a new member with associated address and health record.
+        // Returns false if email or phone already exists.
         public bool CreateMember(CreateMemberViewModel createMember)
         {
             try
@@ -104,6 +110,9 @@ namespace GymManagementBLL.Services.Classes
                 return false;
             }
         }
+
+        // Get detailed information about a member including active membership and plan.
+        // Returns null if member not found.
         public MemberViewModel? GetMemberDetails(int memberId)
         {
             var member = _memberRepository.GetById(memberId);
@@ -136,6 +145,9 @@ namespace GymManagementBLL.Services.Classes
             }
             return viewModel;
         }
+
+        // Get health record details for a specific member.
+        // Returns null if not found.
         public HealthRecordViewModel? GetMemberHealthRecordDetails(int memberId)
         {
             var memberHealthReacord = _HealthRecordRepository.GetById(memberId);
@@ -152,6 +164,9 @@ namespace GymManagementBLL.Services.Classes
 
             return HealthRecordViewModel;
         }
+
+        // Get member information to populate update form.
+        // Returns null if member not found.
         public MemberToUpdateViewModel? GetMemberToUpdate(int memberId)
         {
             var member = _memberRepository.GetById(memberId);
@@ -170,6 +185,8 @@ namespace GymManagementBLL.Services.Classes
             };
         }
 
+        // Update member details including address and contact information.
+        // Returns false if member not found or email/phone already exists.
         public bool UpdateMemberDetails(int Id, MemberToUpdateViewModel UpdatedMember)
         {
             try
@@ -195,10 +212,13 @@ namespace GymManagementBLL.Services.Classes
 
         #region Helpers Methods
 
+        // Check if email already exists in the system.
         private bool IsEmailExists(string email)
         {
             return _memberRepository.GetAll(Q=>Q.Email == email).Any();
         }
+
+        // Check if phone already exists in the system.
         private bool IsPhoneExists(string phone)
         {
             return _memberRepository.GetAll(Q => Q.Phone == phone).Any();
