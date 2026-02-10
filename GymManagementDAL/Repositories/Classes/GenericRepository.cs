@@ -30,7 +30,12 @@ namespace GymManagementDAL.Repositories.Classes
         }
 
         // Retrieves all entities without tracking to improve read-only query performance
-        public IEnumerable<TEntity> GetAll() => _dbContext.Set<TEntity>().AsNoTracking().ToList();
+        public IEnumerable<TEntity> GetAll(Func<TEntity, bool>? condition = null) {
+            if (condition is null)
+                return _dbContext.Set<TEntity>().AsNoTracking().ToList();
+            else
+                return _dbContext.Set<TEntity>().AsNoTracking().Where(condition).ToList();
+        }
 
         // Retrieves a single entity by its primary key value
         public TEntity? GetById(int Id) => _dbContext.Set<TEntity>().Find(Id);

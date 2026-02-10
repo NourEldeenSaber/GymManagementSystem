@@ -55,5 +55,48 @@ namespace GymManagementBLL.Services.Classes
 
             return memberViewModels;
         }
+        public bool CreateMember(CreateMemberViewModel createMember)
+        {
+            try
+            {
+                // check if phone is exists
+                var phoneExist = _memberRepository.GetAll(x => x.Phone == createMember.Phone).Any();
+
+                // check if email is exists
+                var emailExist = _memberRepository.GetAll(x => x.Email == createMember.Email).Any();
+
+                // if one of this return false 
+                if (phoneExist || emailExist) return false;
+
+                // if not Add member and return true
+                var member = new Member
+                {
+                    Name = createMember.Name,
+                    Email = createMember.Email,
+                    Phone = createMember.Phone,
+                    Gender = createMember.Gender,
+                    DateOfBirth = createMember.DateOfBirth,
+                    Address = new Address()
+                    {
+                        BuildingNumber = createMember.BuildingNumber,
+                        City = createMember.City,
+                        Street = createMember.Street,
+                    },
+                    HealthRecord = new HealthRecord()
+                    {
+                        Height = createMember.HealthRecordViewModel.Height,
+                        Weight = createMember.HealthRecordViewModel.Weight,
+                        BloodType = createMember.HealthRecordViewModel.BloodType,
+                        Note = createMember.HealthRecordViewModel.Note
+                    }
+                };
+
+                return _memberRepository.Add(member) > 0;
+            }
+            catch (Exception )
+            {
+                return false;
+            }
+        }
     }
 }
