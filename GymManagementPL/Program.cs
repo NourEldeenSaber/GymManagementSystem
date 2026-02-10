@@ -23,8 +23,8 @@ namespace GymManagementPL
 
                 #endregion
             });
-            builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
-            builder.Services.AddScoped<IPlanRepository,PlanRepository>();
+            
+            builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
 
 
