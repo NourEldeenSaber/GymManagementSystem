@@ -8,12 +8,19 @@ namespace GymManagementBLL.Services.Classes
     internal class MemberService : IMemberService
     {
         private readonly IGenericRepository<Member> _memberRepository;
+        private readonly IPlanRepository _planRepository;
+        private readonly IGenericRepository<MemberShip> _memberShipRepository;
+
         //CLR Will inject address of object in constructor
-        public MemberService(IGenericRepository<Member> memberRepository)
+        public MemberService(IGenericRepository<Member> memberRepository ,
+                             IGenericRepository<MemberShip> memberShipRepository,
+                            IPlanRepository planRepository
+        )
         {
             _memberRepository = memberRepository;
+            _memberShipRepository = memberShipRepository;
+            _planRepository = planRepository;
         }
-
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
             var members = _memberRepository.GetAll();
@@ -97,6 +104,38 @@ namespace GymManagementBLL.Services.Classes
             {
                 return false;
             }
+        }
+        public MemberViewModel? GetMemberDetails(int memberId)
+        {
+            var member = _memberRepository.GetById(memberId);
+
+            if (member is null)
+                return null;
+
+            var viewModel = new MemberViewModel
+            {
+                Name = member.Name,
+                Email = member.Email,
+                Phone = member.Phone,
+                Gender = member.Gender.ToString(),
+                DateOfBirth = member.DateOfBirth.ToString(),
+                Address = $"{member.Address.BuildingNumber} - {member.Address.Street} - {member.Address.City}",
+                Photo = member.Photo,
+
+            };
+
+            //get Active MemberShip
+            var ActiveMemberShip = _memberShipRepository.GetAll(x=>x.MemberId == memberId && x.Status =="Active").FirstOrDefault();
+            if(ActiveMemberShip is not null)
+            {
+
+                viewModel.MemberShipStartDate = ActiveMemberShip.CreatedAt.ToShortDateString();
+                viewModel.MemberShipStartDate = ActiveMemberShip.EndDate.ToShortDateString();
+
+                var Plan = _planRepository.GetById(ActiveMemberShip.PlanId);
+                viewModel.PlanName = Plan?.Name;
+            }
+            return viewModel;
         }
     }
 }

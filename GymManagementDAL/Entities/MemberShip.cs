@@ -8,8 +8,10 @@
         //StartDate -CreatedAt Of BaseEntity [ in configuration we just rename the column]
 
         public DateTime EndDate { get; set; }
+
         //ReadOnly Property
-        public string Status { 
+        public string Status
+        {
             get {
                 if (EndDate >= DateTime.Now)
                     return "Expierd";
