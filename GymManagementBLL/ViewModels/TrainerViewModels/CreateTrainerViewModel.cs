@@ -9,9 +9,9 @@ namespace GymManagementBLL.ViewModels.TrainerViewModels
 		[RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name can only contain letters and spaces")]
 		public string Name { get; set; } = null!;
 
+
 		[Required(ErrorMessage = "Email Is Required")]
 		[EmailAddress(ErrorMessage = "Invalid email format")]
-
 		public string Email { get; set; } = null!;
 
 		[Required(ErrorMessage = "Phone Number Is Required")]

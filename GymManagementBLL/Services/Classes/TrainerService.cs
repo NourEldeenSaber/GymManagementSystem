@@ -13,6 +13,7 @@ namespace GymManagementSystemBLL.Services.Classes
 		{
 			_unitOfWork = unitOfWork;
 		}
+
 		public bool CreateTrainer(CreateTrainerViewModel createdTrainer)
 		{
 			try
@@ -117,7 +118,9 @@ namespace GymManagementSystemBLL.Services.Classes
 			TrainerToUpdate.Address.City = updatedTrainer.City;
 			TrainerToUpdate.Specialties = updatedTrainer.Specialties;
 			TrainerToUpdate.UpdatedAt = DateTime.Now;
+
 			Repo.Update(TrainerToUpdate);
+
 			return _unitOfWork.SaveChanges() > 0;
 		}
 
