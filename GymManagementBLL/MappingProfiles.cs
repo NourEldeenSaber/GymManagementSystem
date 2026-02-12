@@ -21,6 +21,15 @@ namespace GymManagementBLL
                         options.MapFrom(src => src.SessionTrainer.Name);
                     })
                     .ForMember(des=>des.AvailableSlots , options=> options.Ignore());
+
+            #endregion
+
+            #region SessionViewModel => Session
+
+            CreateMap<SessionViewModel, Session>();
+                
+                
+
             #endregion
         }
     }

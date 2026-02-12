@@ -1,6 +1,4 @@
-﻿
-
-using GymManagementBLL.ViewModels.SessionViewModels;
+﻿using GymManagementBLL.ViewModels.SessionViewModels;
 
 namespace GymManagementBLL.Services.Interfaces
 {
@@ -8,6 +6,7 @@ namespace GymManagementBLL.Services.Interfaces
     {
         IEnumerable<SessionViewModel> GetAllSession();
         SessionViewModel? GetSessionById(int id);
+        bool CreateSession(CreateSessionViewModel CreatedSession);
 
     }
 }
