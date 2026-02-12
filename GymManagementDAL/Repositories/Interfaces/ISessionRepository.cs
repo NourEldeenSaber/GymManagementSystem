@@ -8,6 +8,7 @@ namespace GymManagementDAL.Repositories.Interfaces
     {
         IEnumerable<Session> GetAllSessionsWithTrainerAndCategory();
         int GetCountOfBookSlots(int sessionId);
+        Session? GetSessionWithTrainerAndCategory(int sessionId);
         
     }
 }

@@ -7,5 +7,7 @@ namespace GymManagementBLL.Services.Interfaces
     public interface ISessionService
     {
         IEnumerable<SessionViewModel> GetAllSession();
+        SessionViewModel? GetSessionById(int id);
+
     }
 }
