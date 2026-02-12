@@ -67,6 +67,38 @@ namespace GymManagementBLL.Services.Classes
             }
 
         }
+        public UpdateSessionViewModel? GetSessionToUpdate(int sessionId)
+        {
+            var session = _unitOfWork.SessionRepository.GetById(sessionId);
+            if(!IsSessionAvailableForUpdating(session!)) return null;
+
+            return _mapper.Map<UpdateSessionViewModel>(session!); 
+            
+        }
+        public bool UpdateSession(int sessionId, UpdateSessionViewModel UpdatedSession)
+        {
+            try
+            {
+                var Session = _unitOfWork.SessionRepository.GetById(sessionId);
+                if(!IsSessionAvailableForUpdating(Session!)) return false;
+
+                if(!IsTrainerExsists(UpdatedSession.TrainerId)) return false;
+
+                if (IsDateTimeValid(UpdatedSession.StartDate, UpdatedSession.EndDate)) return false;
+
+                _mapper.Map<UpdateSessionViewModel>(Session);
+                Session!.UpdatedAt = DateTime.Now;
+
+                _unitOfWork.SessionRepository.Update(Session);
+                return _unitOfWork.SaveChanges() > 0;
+
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Update Session Failed: {ex}");
+                return false;
+            }
+        }
 
 
 
@@ -84,7 +116,26 @@ namespace GymManagementBLL.Services.Classes
         {
             return startDate < EndDate;
         }
+        private bool IsSessionAvailableForUpdating(Session session)
+        {
+            if (session is  null) return false;
 
+            // If Session Completed - [ Not Update Allowed ]
+            if (session.EndDate < DateTime.Now)
+                return false;
+
+            // If Session Ongoing - [ Not Update Allowed ]
+            if(session.StartDate <= DateTime.Now) 
+                return false;
+
+            // If Session HasActive Booking - [ Not Update Allowed ]
+            var HasActiveBooking = _unitOfWork.SessionRepository.GetCountOfBookSlots(session.Id) > 0;
+            if (HasActiveBooking)
+                return false;
+
+            return true;
+        }
+        
         #endregion
     }
 }
