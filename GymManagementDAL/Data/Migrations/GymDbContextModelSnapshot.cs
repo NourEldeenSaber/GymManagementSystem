@@ -170,12 +170,17 @@ namespace GymManagementDAL.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("SessionId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("MemberId", "PlanId");
 
                     b.HasIndex("PlanId");
+
+                    b.HasIndex("SessionId");
 
                     b.ToTable("MemberShips");
                 });
@@ -380,7 +385,7 @@ namespace GymManagementDAL.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("GymManagementDAL.Entities.Session", "Session")
-                        .WithMany("SessionMembers")
+                        .WithMany()
                         .HasForeignKey("SessionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -403,6 +408,10 @@ namespace GymManagementDAL.Data.Migrations
                         .HasForeignKey("PlanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("GymManagementDAL.Entities.Session", null)
+                        .WithMany("SessionMembers")
+                        .HasForeignKey("SessionId");
 
                     b.Navigation("Member");
 

@@ -41,8 +41,8 @@ namespace GymManagementDAL.Data.DataSeed
 
         private static List<T> LoadDataFromJsonFile<T>(string FileName)
         {
-            var FilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files",FileName);
-            if (File.Exists(FilePath)) throw new FileNotFoundException();
+            var FilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files", FileName);
+            if (!File.Exists(FilePath)) throw new FileNotFoundException();
 
             string Data = File.ReadAllText(FilePath);
             var options = new JsonSerializerOptions()

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GymManagementBLL.ViewModels.MemberViewModels
 {
-    internal class CreateMemberViewModel
+    public class CreateMemberViewModel
     {
         [Required(ErrorMessage = "Name Is Requierd")]
         [StringLength(50 , MinimumLength = 2, ErrorMessage = "Name Must Be Between 2 And 50 Char")]

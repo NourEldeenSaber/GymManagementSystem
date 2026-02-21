@@ -28,7 +28,7 @@
 
         #region Session - MemberSession
 
-        public ICollection<MemberSession> SessionMembers { get; set; }
+        public ICollection<MemberShip> SessionMembers { get; set; }
 
         #endregion
         #endregion

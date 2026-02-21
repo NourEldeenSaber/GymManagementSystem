@@ -5,7 +5,7 @@ using GymManagementDAL.Repositories.Interfaces;
 
 namespace GymManagementBLL.Services.Classes
 {
-    internal class MemberService : IMemberService
+    public class MemberService : IMemberService
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -124,7 +124,7 @@ namespace GymManagementBLL.Services.Classes
             };
 
             //get Active MemberShip
-            var ActiveMemberShip = _unitOfWork.GetRepository<MemberShip>().GetAll(x=>x.MemberId == memberId && x.Status =="Active").FirstOrDefault();
+            var ActiveMemberShip = _unitOfWork.GetRepository<MemberShip>().GetAll(x => x.MemberId == memberId && x.Status == "Active").FirstOrDefault();
             if(ActiveMemberShip is not null)
             {
 
