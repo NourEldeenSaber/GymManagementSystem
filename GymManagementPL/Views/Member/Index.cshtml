@@ -1,5 +1,4 @@
-﻿@using GymManagementBLL.ViewModels.MemberViewModels
-@model IEnumerable<MemberViewModel>
+﻿@model IEnumerable<MemberViewModel>
 
          @*    <div id="Alert" class="alert alert-success alert-dismissible fade show">
                 <i class="bi bi-check-circle-fill me-2"></i>
@@ -69,7 +68,7 @@
                                                 <ul class="dropdown-menu dropdown-menu-start"
                                                     aria-labelledby="dropdownMenuButton-@member.Id">
                                                     <li>
-                                                        <a href="\Member\MemberDetails\memberId"
+                                                        <a asp-controller="Member" asp-action="MemberDetails" asp-route-id="@member.Id"
                                                            class="dropdown-item d-flex align-items-center gap-3">
                                                             <img src="~/images/info 1.jpg" alt="info icon"
                                                                  style="width: 20px; height: 20px;" />
@@ -77,7 +76,7 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="\Member\HealthRecordDetails\memberId"
+                                                        <a asp-controller="Member" asp-action="HealthRecordDetails" asp-route-id="@member.Id"
                                                            class="dropdown-item d-flex align-items-center gap-3">
                                                             <img src="~/images/info 1.jpg" alt="info icon"
                                                                  style="width: 20px; height: 20px;" />
@@ -88,7 +87,7 @@
                                                         <hr class="dropdown-divider">
                                                     </li>
                                                     <li>
-                                                        <a href="\Member\EditMember\memberId"
+                                                        <a asp-controller="Member" asp-action="Edit" asp-route-id="@member.Id"
                                                            class="dropdown-item d-flex align-items-center gap-3">
                                                             <img src="~/images/edit.jpg" alt="edit icon"
                                                                  style="width: 20px; height: 20px;" />
@@ -99,7 +98,7 @@
                                                         <hr class="dropdown-divider">
                                                     </li>
                                                     <li>
-                                                        <a href="\Member\Delete\memberId"
+                                                        <a asp-controller="Member" asp-action="Delete" asp-route-id="@member.Id"
                                                            class="dropdown-item d-flex align-items-center gap-3 text-danger">
                                                             <img src="~/images/x-circle 1.jpg" alt="delete icon"
                                                                  style="width: 20px; height: 20px;" />
