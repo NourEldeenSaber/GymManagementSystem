@@ -11,7 +11,7 @@ namespace GymManagementDAL.Data.Configurations
             builder.Property(x => x.CreatedAt)
                 .HasColumnName("JoinDate")
                 .HasDefaultValueSql("GETDATE()");
-
+            builder.Property(x => x.Photo).IsRequired(false);
             base.Configure(builder); // to get the base configure [ GymUserConfiguration ]
 
             

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GymManagementBLL.ViewModels.PlanViewModels
 {
-    internal class UpdatePlanViewModel
+    public class UpdatePlanViewModel
     {
        
         public string PlanName { get; set; } = null!;
