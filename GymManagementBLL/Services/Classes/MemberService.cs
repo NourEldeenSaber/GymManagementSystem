@@ -115,7 +115,13 @@ namespace GymManagementBLL.Services.Classes
         {
             try
             {
-                if (IsEmailExists(UpdatedMember.Email) || IsPhoneExists(UpdatedMember.Phone))  return false;
+                var EmailExist = _unitOfWork.GetRepository<Member>()
+                                .GetAll(X => X.Email == UpdatedMember.Email && X.Id != Id);
+                var PhoneExist = _unitOfWork.GetRepository<Member>()
+                                .GetAll(X => X.Phone == UpdatedMember.Phone && X.Id != Id);
+
+                if(EmailExist.Any() || PhoneExist.Any()) 
+                    return false;
 
                 var member = _unitOfWork.GetRepository<Member>().GetById(Id);
                 if (member is null) return false;
@@ -141,8 +147,11 @@ namespace GymManagementBLL.Services.Classes
             var member = MemberRepo.GetById(MemberId);
             if (member is null) return false;
 
-            var HasActiveMemberSession = MemberSession.GetAll(X=>X.MemberId == MemberId && X.Session.StartDate > DateTime.Now).Any();
-            if(HasActiveMemberSession) return false;
+            var SessionIds = MemberSession.GetAll(X=>X.MemberId == MemberId ).Select(X=>X.SessionId);
+            var HasFutureSessions = _unitOfWork.GetRepository<Session>().GetAll(
+                X=> SessionIds.Contains(X.Id) && X.StartDate > DateTime.Now
+            ).Any();
+            if(HasFutureSessions) return false;
 
             var memberShips = MemberShipRepo.GetAll(Q => Q.MemberId == MemberId);
             try
