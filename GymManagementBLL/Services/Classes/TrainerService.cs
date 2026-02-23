@@ -73,10 +73,15 @@ namespace GymManagementSystemBLL.Services.Classes
 
 			return new TrainerViewModel
 			{
+				Id = Trainer.Id,
 				Email = Trainer.Email,
 				Name = Trainer.Name,
 				Phone = Trainer.Phone,
-				Specialties = Trainer.Specialties.ToString()
+				Specialties = Trainer.Specialties.ToString(),
+				Address = $"{Trainer.Address.BuildingNumber}-{Trainer.Address.Street}-{Trainer.Address.City}",
+				DateOfBirth = Trainer.DateOfBirth.ToShortDateString(),
+				Photo = Trainer.Phone,
+				Gender = Trainer.Gender.ToString(),
 			};
 		}
 		public TrainerToUpdateViewModel? GetTrainerToUpdate(int trainerId)
@@ -109,9 +114,13 @@ namespace GymManagementSystemBLL.Services.Classes
 			var Repo = _unitOfWork.GetRepository<Trainer>();
 			var TrainerToUpdate = Repo.GetById(trainerId);
 
-			if (TrainerToUpdate is null || IsEmailExists(updatedTrainer.Email) || IsPhoneExists(updatedTrainer.Phone)) return false;
+			var emailExists = Repo.GetAll(m=>m.Email == updatedTrainer.Email && m.Id != trainerId);
+			var phoneExists = Repo.GetAll(m=>m.Phone == updatedTrainer.Phone && m.Id != trainerId);
 
-			TrainerToUpdate.Email = updatedTrainer.Email;
+            if ( emailExists.Any() || phoneExists.Any()) return false;
+			if(TrainerToUpdate is null) return false;
+
+            TrainerToUpdate.Email = updatedTrainer.Email;
 			TrainerToUpdate.Phone = updatedTrainer.Phone;
 			TrainerToUpdate.Address.BuildingNumber = updatedTrainer.BuildingNumber;
 			TrainerToUpdate.Address.Street = updatedTrainer.Street;
