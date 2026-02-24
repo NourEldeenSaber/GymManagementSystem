@@ -49,7 +49,6 @@ namespace GymManagementSystemBLL.Services.Classes
 				return false;
 			}
 		}
-
 		public IEnumerable<TrainerViewModel> GetAllTrainers()
 		{
 			var Trainers = _unitOfWork.GetRepository<Trainer>().GetAll();
@@ -64,7 +63,6 @@ namespace GymManagementSystemBLL.Services.Classes
 				Specialties = X.Specialties.ToString()
 			});
 		}
-
 		public TrainerViewModel? GetTrainerDetails(int trainerId)
 		{
 			var Trainer = _unitOfWork.GetRepository<Trainer>().GetById(trainerId);
@@ -108,7 +106,6 @@ namespace GymManagementSystemBLL.Services.Classes
 			Repo.Delete(TrainerToRemove);
 			return _unitOfWork.SaveChanges() > 0;
 		}
-
 		public bool UpdateTrainerDetails(TrainerToUpdateViewModel updatedTrainer, int trainerId)
 		{
 			var Repo = _unitOfWork.GetRepository<Trainer>();
