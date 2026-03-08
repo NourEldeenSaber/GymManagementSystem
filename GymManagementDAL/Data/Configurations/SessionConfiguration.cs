@@ -14,6 +14,9 @@ namespace GymManagementDAL.Data.Configurations
                 Tb.HasCheckConstraint("SessionEndDateCheck", "EndDate > StartDate");
             });
 
+            // for testing
+            builder.Property(x => x.UpdatedAt).IsRequired(false);
+
             // 1 - M [Category - Session]
             builder.HasOne(x=>x.SessionCategory)
                 .WithMany(x => x.Sessions)

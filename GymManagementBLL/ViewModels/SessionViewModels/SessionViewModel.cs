@@ -5,7 +5,7 @@ namespace GymManagementBLL.ViewModels.SessionViewModels
     public class SessionViewModel
     {
         public int Id { get; set; }
-        public string CatedoryName { get; set; } = null!;
+        public string CategoryName { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string TrainerName { get; set; } = null!;
         public DateTime StartDate { get; set; }

@@ -23,7 +23,7 @@ namespace GymManagementBLL
             #region Session => SessionViewModel
 
             CreateMap<Session, SessionViewModel>()
-                    .ForMember(des => des.CatedoryName, options =>{options.MapFrom(src => src.SessionCategory.CategoryName);})
+                    .ForMember(des => des.CategoryName, options =>{options.MapFrom(src => src.SessionCategory.CategoryName);})
                     .ForMember(des => des.TrainerName, options =>{options.MapFrom(src => src.SessionTrainer.Name);})
                     .ForMember(des => des.AvailableSlots, options => options.Ignore());
 
@@ -120,6 +120,10 @@ namespace GymManagementBLL
                 dest.Address.Street = src.Street;
                 dest.UpdatedAt = DateTime.Now;
             });
+
+            CreateMap<Trainer, TrainerSelectViewModel>();
+            CreateMap<Category, CategorySelectViewModel>()
+                .ForMember(des => des.Name , opt => opt.MapFrom(src =>src.CategoryName));
         }
 
         private void MapPlan()

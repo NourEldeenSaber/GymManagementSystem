@@ -6,7 +6,7 @@ using GymManagementDAL.Repositories.Interfaces;
 
 namespace GymManagementBLL.Services.Classes
 {
-    internal class SessionService : ISessionService
+    public class SessionService : ISessionService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -54,7 +54,17 @@ namespace GymManagementBLL.Services.Classes
 
                 if (CreatedSession.Capacity > 25 || CreatedSession.Capacity < 0) return false;
 
-                var sessionEntity = _mapper.Map<Session>(CreatedSession);
+                var sessionEntity = new Session()
+                {
+                    Capacity = CreatedSession.Capacity,
+                    Description = CreatedSession.Description,
+                    StartDate = CreatedSession.StartDate,
+                    EndDate = CreatedSession.EndDate,
+                    TrainerId = CreatedSession.TrainerId,
+                    CategoryId = CreatedSession.CategoryId,
+                    CreatedAt = DateTime.Now,
+                    
+                };
 
                 _unitOfWork.GetRepository<Session>().Add(sessionEntity);
 
@@ -119,7 +129,17 @@ namespace GymManagementBLL.Services.Classes
 
         }
 
+        public IEnumerable<TrainerSelectViewModel> GetTrainerForDropDown()
+        {
+            var Trainers = _unitOfWork.GetRepository<Trainer>().GetAll();
+            return _mapper.Map<IEnumerable<TrainerSelectViewModel>>(Trainers);
+        }
 
+        public IEnumerable<CategorySelectViewModel> GetCategoryForDropDown()
+        {
+            var Categories = _unitOfWork.GetRepository<Category>().GetAll();
+            return _mapper.Map<IEnumerable<CategorySelectViewModel>>(Categories);
+        }
 
         #region Helpers Methods
 
@@ -133,7 +153,7 @@ namespace GymManagementBLL.Services.Classes
         }
         private bool IsDateTimeValid(DateTime startDate , DateTime EndDate)
         {
-            return startDate < EndDate;
+            return startDate < EndDate && DateTime.Now >= startDate;
         }
         private bool IsSessionAvailableForUpdating(Session session)
         {
@@ -173,6 +193,8 @@ namespace GymManagementBLL.Services.Classes
 
             return true;
         }
+
+        
 
 
         #endregion

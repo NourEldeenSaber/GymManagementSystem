@@ -8,6 +8,7 @@ using GymManagementDAL.Repositories.Interfaces;
 using GymManagementSystemBLL.Services.Classes;
 using GymManagementSystemBLL.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+
 namespace GymManagementPL
 {
     public class Program
@@ -38,6 +39,7 @@ namespace GymManagementPL
             builder.Services.AddScoped<IMemberService, MemberService>();
             builder.Services.AddScoped<ITrainerService, TrainerService>();
             builder.Services.AddScoped<IPlanService, PlanService>();
+            builder.Services.AddScoped<ISessionService, SessionService>();
 
             var app = builder.Build();
 
