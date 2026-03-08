@@ -49,7 +49,8 @@ namespace GymManagementPL.Controllers
 
         public IActionResult Create()
         {
-            LoadDropDowns();
+            LoadDropDownsForCategories();
+            LoadDropDownsForTrainers();
             return View();
         }
         [HttpPost]
@@ -57,7 +58,8 @@ namespace GymManagementPL.Controllers
         {
             if (!ModelState.IsValid)
             {
-                LoadDropDowns();
+                LoadDropDownsForCategories();
+                LoadDropDownsForTrainers();
                 return View(CreatedSession);
             }
             var result = _sessionService.CreateSession(CreatedSession);
@@ -68,7 +70,8 @@ namespace GymManagementPL.Controllers
             }
             else
             {
-                LoadDropDowns();
+                LoadDropDownsForCategories();
+                LoadDropDownsForTrainers();
                 TempData["ErrorMessage"] = "Failed To Create Session";
                 return View(CreatedSession);
             }
@@ -76,13 +79,55 @@ namespace GymManagementPL.Controllers
 
         #endregion
 
-        #region Helper Methods
+        #region Session Edit
         
-        private void LoadDropDowns()
+        public IActionResult Edit(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Session Id";
+                return RedirectToAction(nameof(Index));
+            }
+            var session = _sessionService.GetSessionToUpdate(id);
+            if (session is null)
+            {
+                TempData["ErrorMessage"] = "Session Cannot be Updated";
+                return RedirectToAction(nameof(Index));
+            }
+            LoadDropDownsForTrainers();
+            return View(session);
+        }
+
+        [HttpPost]
+        public IActionResult Edit([FromRoute]int id ,UpdateSessionViewModel updatedSession)
+        {
+            if (!ModelState.IsValid) {
+                LoadDropDownsForTrainers();
+                return View(updatedSession);
+            }
+            var result = _sessionService.UpdateSession(id, updatedSession);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Session Updated Successfully";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed To Update Session";
+            }
+            return RedirectToAction(nameof(Index));
+
+        }
+        #endregion
+
+        #region Helper Methods
+
+        private void LoadDropDownsForTrainers()
         {
             var Trainers = _sessionService.GetTrainerForDropDown();
             ViewBag.Trainers = new SelectList(Trainers, "Id", "Name");
-
+        }
+        private void LoadDropDownsForCategories()
+        {
             var Categories = _sessionService.GetCategoryForDropDown();
             ViewBag.Categories = new SelectList(Categories, "Id", "Name");
         }

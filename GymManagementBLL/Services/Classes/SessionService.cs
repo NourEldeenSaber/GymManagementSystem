@@ -89,17 +89,19 @@ namespace GymManagementBLL.Services.Classes
         {
             try
             {
-                var Session = _unitOfWork.SessionRepository.GetById(sessionId);
-                if(!IsSessionAvailableForUpdating(Session!)) return false;
+                var repo = _unitOfWork.GetRepository<Session>();
+                var session = repo.GetById(sessionId);
+                if(!IsSessionAvailableForUpdating(session!)) return false;
 
                 if(!IsTrainerExsists(UpdatedSession.TrainerId)) return false;
 
-                if (IsDateTimeValid(UpdatedSession.StartDate, UpdatedSession.EndDate)) return false;
+                if (!IsDateTimeValid(UpdatedSession.StartDate, UpdatedSession.EndDate)) return false;
 
-                _mapper.Map<UpdateSessionViewModel>(Session);
-                Session!.UpdatedAt = DateTime.Now;
+                //_mapper.Map<UpdateSessionViewModel>(session);
+                _mapper.Map(UpdatedSession, session);
+                session!.UpdatedAt = DateTime.Now;
 
-                _unitOfWork.SessionRepository.Update(Session);
+                repo.Update(session);
                 return _unitOfWork.SaveChanges() > 0;
 
             }
@@ -153,7 +155,7 @@ namespace GymManagementBLL.Services.Classes
         }
         private bool IsDateTimeValid(DateTime startDate , DateTime EndDate)
         {
-            return startDate < EndDate && DateTime.Now >= startDate;
+            return EndDate > startDate && DateTime.Now < startDate;
         }
         private bool IsSessionAvailableForUpdating(Session session)
         {
