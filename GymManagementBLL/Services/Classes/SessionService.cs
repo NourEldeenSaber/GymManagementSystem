@@ -97,7 +97,6 @@ namespace GymManagementBLL.Services.Classes
 
                 if (!IsDateTimeValid(UpdatedSession.StartDate, UpdatedSession.EndDate)) return false;
 
-                //_mapper.Map<UpdateSessionViewModel>(session);
                 _mapper.Map(UpdatedSession, session);
                 session!.UpdatedAt = DateTime.Now;
 
@@ -115,10 +114,11 @@ namespace GymManagementBLL.Services.Classes
         {
             try
             {
-                var Session = _unitOfWork.SessionRepository.GetById(sessionId);
+                var repo = _unitOfWork.GetRepository<Session>();
+                var Session = repo.GetById(sessionId);
                 if (!IsSessionAvailableForRemoving(Session!)) return false;
 
-                _unitOfWork.SessionRepository.Delete(Session!);
+                repo.Delete(Session!);
                 return _unitOfWork.SaveChanges() > 0;
 
 
@@ -130,13 +130,11 @@ namespace GymManagementBLL.Services.Classes
 
 
         }
-
         public IEnumerable<TrainerSelectViewModel> GetTrainerForDropDown()
         {
             var Trainers = _unitOfWork.GetRepository<Trainer>().GetAll();
             return _mapper.Map<IEnumerable<TrainerSelectViewModel>>(Trainers);
         }
-
         public IEnumerable<CategorySelectViewModel> GetCategoryForDropDown()
         {
             var Categories = _unitOfWork.GetRepository<Category>().GetAll();
@@ -179,25 +177,11 @@ namespace GymManagementBLL.Services.Classes
 
         private bool IsSessionAvailableForRemoving(Session session)
         {
-            if (session is null) return false;
+            //Only future sessions with no booking
+            return session.EndDate < DateTime.Now && 
+                _unitOfWork.SessionRepository.GetCountOfBookSlots(session.Id) == 0;
 
-
-            // If Session Ongoing [starting] - [ Not Delete Allowed ]
-            if (session.StartDate <= DateTime.Now && session.EndDate>DateTime.Now)
-                return false;
-
-            // If session is Upcoming - [ Not Delete Allowed ]
-            if (session.StartDate > DateTime.Now) return false;
-            // If Session HasActive Booking - [ Not Update Allowed ]
-            var HasActiveBooking = _unitOfWork.SessionRepository.GetCountOfBookSlots(session.Id) > 0;
-            if (HasActiveBooking)
-                return false;
-
-            return true;
         }
-
-        
-
 
         #endregion
     }
