@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymManagementDAL.Data.Migrations
 {
     [DbContext(typeof(GymDbContext))]
-    [Migration("20260308005246_UpdatedAt Column in SessionTable Will Allow Nulls")]
-    partial class UpdatedAtColumninSessionTableWillAllowNulls
+    [Migration("20260309003738_ModifyPhotoColumnInMemberTable")]
+    partial class ModifyPhotoColumnInMemberTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

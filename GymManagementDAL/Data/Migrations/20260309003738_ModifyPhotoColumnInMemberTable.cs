@@ -5,7 +5,7 @@
 namespace GymManagementDAL.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdatedAtColumninSessionTableWillAllowNulls : Migration
+    public partial class ModifyPhotoColumnInMemberTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
