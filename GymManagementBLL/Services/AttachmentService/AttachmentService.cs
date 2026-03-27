@@ -1,4 +1,6 @@
-﻿namespace GymManagementBLL.Services.AttachmentService
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+namespace GymManagementBLL.Services.AttachmentService
 {
     public class AttachmentService : IAttachmentService
     {
@@ -24,7 +26,7 @@
                 if (!allowedExtensions.Contains(extension)) return null;
 
                 var folderPath = Path.Combine(_webHost.WebRootPath, "images", folderName);
-                if (Directory.Exists(folderPath))
+                if (!Directory.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
                 }
