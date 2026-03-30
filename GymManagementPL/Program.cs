@@ -4,10 +4,12 @@ using GymManagementBLL.Services.Classes;
 using GymManagementBLL.Services.Interfaces;
 using GymManagementDAL.Data.Contexts;
 using GymManagementDAL.Data.DataSeed;
+using GymManagementDAL.Entities;
 using GymManagementDAL.Repositories.Classes;
 using GymManagementDAL.Repositories.Interfaces;
 using GymManagementSystemBLL.Services.Classes;
 using GymManagementSystemBLL.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymManagementPL
@@ -31,25 +33,43 @@ namespace GymManagementPL
 
                 #endregion
             });
-            
-            builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-            builder.Services.AddScoped<ISessionRepository,SessionRepository>();
-            builder.Services.AddAutoMapper(X=>X.AddProfile(new MappingProfiles()));
-            builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            #region DI
+
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+            builder.Services.AddAutoMapper(X => X.AddProfile(new MappingProfiles()));
+            builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
             builder.Services.AddScoped<IMemberService, MemberService>();
             builder.Services.AddScoped<ITrainerService, TrainerService>();
             builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
-
             builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(Config =>
+            {
+                Config.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<GymDbContext>();
+
+            builder.Services.ConfigureApplicationCookie(opt =>
+            {
+                opt.LoginPath = "/Account/Login";
+                opt.AccessDeniedPath = "/Account/AccessDenied";
+            });
+
+            #endregion
+
             var app = builder.Build();
+
+
 
             #region MigrateDb - DataSeeding
 
             using var scope = app.Services.CreateScope();
+
             var dbContext = scope.ServiceProvider.GetRequiredService<GymDbContext>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             var pendingMigrations = dbContext.Database.GetPendingMigrations();
 
@@ -59,6 +79,7 @@ namespace GymManagementPL
             }
 
             GymDbContextSeeding.SeedData(dbContext);
+            IdentityDbContextSeeding.seedData(roleManager, userManager);
 
             #endregion
 
