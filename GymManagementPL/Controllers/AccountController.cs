@@ -51,6 +51,7 @@ namespace GymManagementPL.Controllers
         }
 
         #endregion
+      
         #region Logout
         [HttpPost]
         public IActionResult Logout()
@@ -59,6 +60,14 @@ namespace GymManagementPL.Controllers
             return RedirectToAction(nameof(Login));
         }
         #endregion
-        //Access Denied
+
+        #region AccessDenied
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        #endregion
     }
 }
