@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using GymManagementBLL.ViewModels.MembershipViewModels;
 using GymManagementBLL.ViewModels.MemberViewModels;
 using GymManagementBLL.ViewModels.PlanViewModels;
 using GymManagementBLL.ViewModels.SessionViewModels;
 using GymManagementBLL.ViewModels.TrainerViewModels;
 using GymManagementDAL.Entities;
+using Microsoft.Extensions.Options;
 
 namespace GymManagementBLL
 {
@@ -15,9 +17,16 @@ namespace GymManagementBLL
             MapMember();
             MapTrainer();
             MapPlan();
-
+            MapMemberShip();
         }
 
+        private void MapMemberShip()
+        {
+            CreateMap<MemberShip, MembershipViewModel>()
+                .ForMember(dest => dest.MemberName, options => { options.MapFrom(src => src.Member.Name); })
+                .ForMember(dest => dest.PlanName , options => { options.MapFrom(src => src.Plan.Name); })
+                .ForMember(dest => dest.StartDate , options => { options.MapFrom(src => src.CreatedAt); });
+        }
         private void MapSession()
         {
             #region Session => SessionViewModel
@@ -40,8 +49,7 @@ namespace GymManagementBLL
             CreateMap<Session, UpdateSessionViewModel>().ReverseMap();
 
             #endregion
-        }
-        
+        }    
         private void MapMember()
         {
 
@@ -94,7 +102,6 @@ namespace GymManagementBLL
 
             #endregion
         }
-
         private void MapTrainer()
         {
             CreateMap<CreateTrainerViewModel, Trainer>()
@@ -125,7 +132,6 @@ namespace GymManagementBLL
             CreateMap<Category, CategorySelectViewModel>()
                 .ForMember(des => des.Name , opt => opt.MapFrom(src =>src.CategoryName));
         }
-
         private void MapPlan()
         {
             CreateMap<Plan, PlanViewModel>();

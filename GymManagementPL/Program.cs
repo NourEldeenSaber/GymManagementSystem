@@ -33,17 +33,23 @@ namespace GymManagementPL
 
                 #endregion
             });
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             #region DI
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+            builder.Services.AddScoped(typeof(IMembershipRepository), typeof(MembershipRepository));
+
             builder.Services.AddAutoMapper(X => X.AddProfile(new MappingProfiles()));
+
             builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
             builder.Services.AddScoped<IMemberService, MemberService>();
             builder.Services.AddScoped<ITrainerService, TrainerService>();
             builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
+            builder.Services.AddScoped<IMembershipService, MembershipService>();
+
+
             builder.Services.AddScoped<IAttachmentService, AttachmentService>();
             builder.Services.AddScoped<IAccountService, AccountService>();
 
