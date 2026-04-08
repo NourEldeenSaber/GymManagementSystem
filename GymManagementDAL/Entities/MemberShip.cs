@@ -14,9 +14,10 @@
         {
             get {
                 if (EndDate >= DateTime.Now)
-                    return "Expierd";
-                else
                     return "Active";
+                else
+                    return "Expierd";
+                   
             }
         }
 

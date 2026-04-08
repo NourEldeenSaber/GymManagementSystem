@@ -20,7 +20,7 @@ namespace GymManagementBLL.Services.Classes
         public IEnumerable<MembershipViewModel> GetAllMemberShips()
         {
             var memberShips = _unitOfWork.MembershipRepository
-                                        .GetAllMembershipsWithMembersAndPlans(m=>m.Status.ToLower() == "active");
+                                        .GetAllMembershipsWithMembersAndPlans(m=>m.Status == "Active");
             var membershipsViewModel = _mapper.Map<IEnumerable<MembershipViewModel>>(memberShips);
             return membershipsViewModel;
         }
@@ -39,9 +39,10 @@ namespace GymManagementBLL.Services.Classes
 
             var plan = _unitOfWork.GetRepository<Plan>().GetById(model.PlanId);
 
-            if(plan is null) return false;
             // Set membership end date based on plan duration
-            membershipToCreate.EndDate = membershipToCreate.CreatedAt.AddDays(plan.DurationDays);
+            membershipToCreate.EndDate = DateTime.UtcNow.AddDays(plan!.DurationDays);
+
+            
 
             membershipRepo.Add(membershipToCreate);
             
@@ -61,6 +62,20 @@ namespace GymManagementBLL.Services.Classes
         // Determines whether a member has any active memberships.
         private bool HasActiveMemberships(int memberId)
         => _unitOfWork.MembershipRepository.GetAllMembershipsWithMembersAndPlans(m => m.Status.ToLower() == "active" && m.MemberId == memberId).Any();
+
+        public IEnumerable<PlanForSelectListViewModel> GetPlansForDropDown()
+        {
+            var plans = _unitOfWork.GetRepository<Plan>().GetAll(plan => plan.IsActive);
+            var plansSelectList = _mapper.Map<IEnumerable<PlanForSelectListViewModel>>(plans);
+            return plansSelectList;
+        }
+
+        public IEnumerable<MemberForSelectListViewModel> GetMemberForDropDown()
+        {
+            var members = _unitOfWork.GetRepository<Member>().GetAll();
+            var membersSelectList = _mapper.Map<IEnumerable<MemberForSelectListViewModel>>(members);
+            return membersSelectList;
+        }
 
         #endregion
     }
