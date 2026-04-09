@@ -25,7 +25,9 @@ namespace GymManagementBLL
         private void MapBooking()
         {
             CreateMap<MemberSession, MemberForSessionViewModel>()
-                .ForMember(dest => dest.MemberName , opt=>opt.MapFrom(src => src.Member.Name))
+                .ForMember(dest => dest.MemberName, opt => opt.MapFrom(src => src.Member.Name))
+                .ForMember(dest => dest.SessionId, opt => opt.MapFrom(src => src.SessionId))
+                .ForMember(dest=>dest.MemberId , opt=>opt.MapFrom(src => src.MemberId))
                 .ForMember(dest => dest.BookingDate , opt => opt.MapFrom(src => src.CreatedAt.ToString()));
         }
         private void MapMemberShip()

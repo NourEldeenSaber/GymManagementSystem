@@ -19,5 +19,10 @@ namespace GymManagementDAL.Repositories.Classes
                                             .Include(ms => ms.Member)
                                             .ToList();
         }
+
+        public MemberSession? GetSessionByMemberIdAndSessionId(int memberId, int sessionId) { 
+           return _dbContext.MemberSessions.Where(Q=>Q.SessionId == sessionId && Q.MemberId == memberId ).FirstOrDefault();
+        }
+
     }
 }

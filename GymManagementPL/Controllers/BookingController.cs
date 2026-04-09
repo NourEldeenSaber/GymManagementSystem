@@ -15,8 +15,34 @@ namespace GymManagementPL.Controllers
 
         public IActionResult GetMembersForUpcomingSession(int id)
         {
-            var members = _bookingService.GetAllMembersForUpcomingSession(id);
+            var members = _bookingService.GetMembersSession(id);
             return View(members);
+        }
+
+        public IActionResult GetMembersForOngoingSession(int id)
+        {
+            var members = _bookingService.GetMembersSession(id);
+            return View(members);
+        }
+
+        [HttpPost]
+        public IActionResult MarkAsAttended(int memberId, int sessionId)
+        {
+            if (memberId < 0 && sessionId < 0)
+            {
+                TempData["ErrorMessage"] = "Invalid to Attend";
+                return RedirectToAction(nameof(Index));
+            }
+            var res = _bookingService.ToggleIsAttend(memberId, sessionId);
+            if (res)
+            {
+                TempData["SuccessMessage"] = "Active Attended ";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to Attend";
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
