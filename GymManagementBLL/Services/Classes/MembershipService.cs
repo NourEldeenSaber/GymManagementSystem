@@ -49,6 +49,17 @@ namespace GymManagementBLL.Services.Classes
             return _unitOfWork.SaveChanges() > 0 ;
         }
 
+        public bool DeleteMembership(int MemberId)
+        {
+            var membershipRepo = _unitOfWork.MembershipRepository;
+            var membershipForDelete = membershipRepo.GetFirstOrDefault(m => m.MemberId == MemberId && m.Status == "Active");
+            if(membershipForDelete is null )return false;
+
+            membershipRepo.Delete(membershipForDelete);
+            return _unitOfWork.SaveChanges() > 0;
+        }
+
+
         #region Helper Methods
 
         // Checks member exists in the database by their ID.
@@ -77,6 +88,7 @@ namespace GymManagementBLL.Services.Classes
             return membersSelectList;
         }
 
+       
         #endregion
     }
 }

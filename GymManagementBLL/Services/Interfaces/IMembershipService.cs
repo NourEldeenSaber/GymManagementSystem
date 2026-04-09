@@ -10,6 +10,8 @@ namespace GymManagementBLL.Services.Interfaces
         IEnumerable<MemberForSelectListViewModel> GetMemberForDropDown();
         bool CreateMembership(CreateMembershipViewModel model);
 
+        bool DeleteMembership(int MemberId);
+
 
     }
 }

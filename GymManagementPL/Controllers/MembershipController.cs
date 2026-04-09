@@ -54,6 +54,20 @@ namespace GymManagementPL.Controllers
 
         #endregion
 
+        public IActionResult Cancel(int id)
+        {
+            var result = _membershipService.DeleteMembership(id);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Membership Deleted Successfully";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Membership Can't Deleted";
+                return RedirectToAction(nameof(Index));
+            }
+        }
 
         #region Helper Methods
 

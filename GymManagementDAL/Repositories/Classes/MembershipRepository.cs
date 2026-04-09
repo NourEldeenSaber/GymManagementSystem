@@ -21,5 +21,11 @@ namespace GymManagementDAL.Repositories.Classes
                                                     .Where(filter ?? ( _ => true));
             return memberShips;
         }
+
+        public MemberShip? GetFirstOrDefault(Func<MemberShip, bool>? filter = null)
+        {
+             var membership = _dbContext.MemberShips.FirstOrDefault(filter ?? (_ => true));
+            return membership;
+        }
     }
 }
