@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GymManagementBLL.Services.Interfaces;
 using GymManagementBLL.ViewModels.BookingViewModels;
+using GymManagementBLL.ViewModels.MembershipViewModels;
 using GymManagementBLL.ViewModels.SessionViewModels;
 using GymManagementDAL.Entities;
 using GymManagementDAL.Repositories.Interfaces;
@@ -70,7 +71,7 @@ namespace GymManagementBLL.Services.Classes
 
             var membershipRepo = _unitOfWork.MembershipRepository;
 
-            var activeMembershipForMember = membershipRepo.GetFirstOrDefault(m => m.Status == "Active" && m.MemberId == model.SessionId);
+            var activeMembershipForMember = membershipRepo.GetFirstOrDefault(m => m.Status.ToLower() == "active" && m.MemberId == model.MemberId);
             if (activeMembershipForMember is null) return false;
 
             var sessionRepo = _unitOfWork.SessionRepository;
@@ -86,5 +87,21 @@ namespace GymManagementBLL.Services.Classes
             return _unitOfWork.SaveChanges() > 0;
 
         }
+
+        #region Helper Methods
+
+        public IEnumerable<MemberForSelectListViewModel> GetMembersForDropDown(int id)
+        {
+            var bookingRepo = _unitOfWork.BookingRepository;
+            var bookMembersIds = bookingRepo.GetAll(m => m.Id == id)
+                                              .Select(MS => MS.MemberId)
+                                              .ToList();
+            var membersAvilableToBook = _unitOfWork.GetRepository<Member>()
+                                                   .GetAll(m => !bookMembersIds.Contains(m.Id));
+            var membersSelectLis = _mapper.Map<IEnumerable<MemberForSelectListViewModel>>(membersAvilableToBook);
+            return membersSelectLis;
+        }
+
+        #endregion
     }
 }
