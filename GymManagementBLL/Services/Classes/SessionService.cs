@@ -174,7 +174,6 @@ namespace GymManagementBLL.Services.Classes
 
             return true;
         }
-
         private bool IsSessionAvailableForRemoving(Session session)
         {
             //Only future sessions with no booking

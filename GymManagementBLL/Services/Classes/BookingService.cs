@@ -23,6 +23,12 @@ namespace GymManagementBLL.Services.Classes
             var sessions = SessionRepo.GetAllSessionsWithTrainerAndCategory();
 
             var sessionViewModels = _mapper.Map<IEnumerable<SessionViewModel>>(sessions);
+
+            foreach(var session in sessionViewModels)
+            {
+                session.AvailableSlots = session.Capacity - SessionRepo.GetCountOfBookSlots(session.Id);
+            }
+
             return sessionViewModels;
         }
     }
