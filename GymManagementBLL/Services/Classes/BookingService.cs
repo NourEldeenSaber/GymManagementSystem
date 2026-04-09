@@ -1,0 +1,29 @@
+﻿
+
+using AutoMapper;
+using GymManagementBLL.Services.Interfaces;
+using GymManagementBLL.ViewModels.SessionViewModels;
+using GymManagementDAL.Repositories.Interfaces;
+
+namespace GymManagementBLL.Services.Classes
+{
+    public class BookingService : IBookingService
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public BookingService(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
+        public IEnumerable<SessionViewModel> GetAllSessionsWithTrainerAndCategory()
+        {
+            var SessionRepo = _unitOfWork.SessionRepository;
+            var sessions = SessionRepo.GetAllSessionsWithTrainerAndCategory();
+
+            var sessionViewModels = _mapper.Map<IEnumerable<SessionViewModel>>(sessions);
+            return sessionViewModels;
+        }
+    }
+}
