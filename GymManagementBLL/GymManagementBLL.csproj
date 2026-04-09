@@ -18,9 +18,5 @@
   <ItemGroup>
     <ProjectReference Include="..\GymManagementDAL\GymManagementDAL.csproj" />
   </ItemGroup>
-	
-  <ItemGroup>
-    <Folder Include="ViewModels\BookingViewModels\" />
-  </ItemGroup>
 
 </Project>

@@ -12,5 +12,11 @@ namespace GymManagementPL.Controllers
             var sessions = _bookingService.GetAllSessionsWithTrainerAndCategory();
             return View(sessions);
         }
+
+        public IActionResult GetMembersForUpcomingSession(int id)
+        {
+            var members = _bookingService.GetAllMembersForUpcomingSession(id);
+            return View(members);
+        }
     }
 }
