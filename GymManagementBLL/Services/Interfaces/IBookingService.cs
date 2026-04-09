@@ -10,11 +10,8 @@ namespace GymManagementBLL.Services.Interfaces
     {
         IEnumerable<SessionViewModel> GetAllSessionsWithTrainerAndCategory();
         IEnumerable<MemberForSessionViewModel> GetMembersSession(int id);
-
-
-
-
-
         public bool ToggleIsAttend(int memberId, int SessionId);
+        public bool CreateBooking(CreateBookingViewModel model);
+
     }
 }

@@ -18,6 +18,8 @@ namespace GymManagementBLL.Services.Classes
             _mapper = mapper;
         }
 
+       
+
         public IEnumerable<SessionViewModel> GetAllSessionsWithTrainerAndCategory()
         {
             var SessionRepo = _unitOfWork.SessionRepository;
@@ -40,7 +42,6 @@ namespace GymManagementBLL.Services.Classes
             var memberForSessionViewModel = _mapper.Map<IEnumerable<MemberForSessionViewModel>>(memberOfSessions);
             return memberForSessionViewModel;
         }
-
         public bool ToggleIsAttend(int memberId , int SessionId)
         {
             var repo = _unitOfWork.BookingRepository;
@@ -60,6 +61,30 @@ namespace GymManagementBLL.Services.Classes
                 return false;
             }
             
+        }
+
+        public bool CreateBooking(CreateBookingViewModel model)
+        {
+            var session = _unitOfWork.SessionRepository.GetById(model.SessionId); 
+            if (session == null || session.StartDate <= DateTime.UtcNow) return false;
+
+            var membershipRepo = _unitOfWork.MembershipRepository;
+
+            var activeMembershipForMember = membershipRepo.GetFirstOrDefault(m => m.Status == "Active" && m.MemberId == model.SessionId);
+            if (activeMembershipForMember is null) return false;
+
+            var sessionRepo = _unitOfWork.SessionRepository;
+            
+            var bookedSlots = sessionRepo.GetCountOfBookSlots(model.SessionId);
+            var avilableSlots = session.Capacity - bookedSlots;
+            if (avilableSlots == 0) return false;
+
+            var booking = _mapper.Map<MemberSession>(model);
+            booking.IsAttended = false; 
+
+            _unitOfWork.BookingRepository.Add(booking);
+            return _unitOfWork.SaveChanges() > 0;
+
         }
     }
 }
